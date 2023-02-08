@@ -133,11 +133,12 @@ public class LibroDAO {
 		Connection con = conexion.getConexion();
 		PreparedStatement consulta = null;
 		int resultado=0;
-		
+		String sql="";
 		try {
-			consulta= con.prepareStatement(
-					"insert into libro  "
-					+ "values(?,?,?,?,?,?,?,?)");
+			 sql= "insert into libros (isbn,titulo, codEditorial,"
+			 		+" anio, num_pags, precio, cantidad, precioCD) "
+					+ "values(?,?,?,?,?,?,?,?)";
+			consulta= con.prepareStatement(sql);
 			
 			consulta.setString(1,libro.getIsbn());
 			consulta.setString(2,libro.getTitulo());
@@ -149,13 +150,14 @@ public class LibroDAO {
 			consulta.setFloat(8,libro.getPrecioCD());
 
 			
-			
+	
 			resultado = consulta.executeUpdate();
 					
 
 		} catch (SQLException e) {
 			System.out.println("Error al realizar la consulta: "+
 								e.getMessage());
+			System.out.println(libro);
 		} finally {
 			try {
 				consulta.close();

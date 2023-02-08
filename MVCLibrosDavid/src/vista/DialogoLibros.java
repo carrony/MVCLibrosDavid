@@ -128,13 +128,13 @@ public class DialogoLibros extends JDialog {
 		int fila= table.getSelectedRow();
 		if (fila==-1) {
 			JOptionPane.showMessageDialog(this, 
-					"Debe seleccionar una editorial");
+					"Debe seleccionar un libro a borrar");
 			return;
 		}
 		DefaultTableModel modelo = (DefaultTableModel) 
 				table.getModel();
-		int codEditorial= (int) modelo.getValueAt(fila, 0);
-		controlador.eliminarEditorial(codEditorial);
+		String isbn= (String) modelo.getValueAt(fila, 0);
+		controlador.eliminarLibro(isbn);
 		
 	}
 
@@ -142,13 +142,13 @@ public class DialogoLibros extends JDialog {
 		int fila= table.getSelectedRow();
 		if (fila==-1) {
 			JOptionPane.showMessageDialog(this, 
-					"Debe seleccionar una editorial");
+					"Debe seleccionar un libro");
 			return;
 		}
 		DefaultTableModel modelo = (DefaultTableModel) 
 				table.getModel();
-		int codEditorial= (int) modelo.getValueAt(fila, 0);
-		controlador.mostrarActualizarEditorial(codEditorial);
+		String isbn= (String) modelo.getValueAt(fila, 0);
+		controlador.mostrarActualizarLibro(isbn);
 	}
 
 

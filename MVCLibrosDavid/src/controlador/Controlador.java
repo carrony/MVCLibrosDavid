@@ -11,6 +11,7 @@ import modelo.Libro;
 import vista.DialogoEditoriales;
 import vista.DialogoLibros;
 import vista.NuevaEditorial;
+import vista.NuevoLibro;
 import vista.VentanaPpal;
 
 public class Controlador {
@@ -20,6 +21,7 @@ public class Controlador {
 	private NuevaEditorial nuevaEditorial;
 	private DialogoEditoriales dialogoEditoriales;
 	private DialogoLibros dialogoLibros;
+	private NuevoLibro nuevoLibro;
 	
 	// objetos DAO para el acceso a bases de datos
 	private EditorialDAO editorialDAO;
@@ -31,12 +33,14 @@ public class Controlador {
 		this.nuevaEditorial = new NuevaEditorial();
 		this.dialogoEditoriales = new DialogoEditoriales();
 		this.dialogoLibros = new DialogoLibros();
+		this.nuevoLibro = new NuevoLibro();
 		
 		// Establecemos los controladores para las vistas
 		this.ventanaPpal.setControlador(this);
 		this.nuevaEditorial.setControlador(this);
 		this.dialogoEditoriales.setControlador(this);
 		this.dialogoLibros.setControlador(this);
+		this.nuevoLibro.setControlador(this);
 		
 		// instanciamos los DAO
 		editorialDAO = new EditorialDAO();
@@ -71,6 +75,18 @@ public class Controlador {
 				libroDAO.obtenerLibros();
 		this.dialogoLibros.setListaLibros(lista);
 		this.dialogoLibros.setVisible(true);
+	}
+	
+	public void mostrarNuevoLibro() {
+		this.nuevoLibro.setLibro(null);
+		this.nuevoLibro.setVisible(true);
+	}
+	
+	public void mostrarActualizarLibro(String isbn) {
+		Libro l = libroDAO.obtenerLibro(isbn);
+		this.nuevoLibro.setLibro(l);
+		this.nuevoLibro.setVisible(true);
+		
 	}
 
 	public void insertarEditorial(Editorial ed) {
@@ -112,6 +128,48 @@ public class Controlador {
 			this.nuevaEditorial.setVisible(false);
 		}
 		mostrarEditoriales();
+		
+	}
+	
+	public void insertarLibro(Libro l) {
+		int res = libroDAO.insertarLibro(l);
+		if (res==0) {
+			JOptionPane.showMessageDialog(nuevoLibro, 
+					"Error no se ha podido insertar");
+		} else {
+			JOptionPane.showMessageDialog(nuevoLibro, 
+					"Libro añadido correctamente");
+			nuevoLibro.setVisible(false);
+		}
+	}
+
+	
+
+	public void actualizarLibro(Libro l) {
+		int res = libroDAO.actualizarLibro(l);
+		if (res==0) {
+			JOptionPane.showMessageDialog(nuevoLibro,
+					"Error. No se ha podido actualizar");
+		} else {
+			JOptionPane.showMessageDialog(nuevoLibro,
+					"Libro actualizada correctamente");
+			this.nuevoLibro.setVisible(false);
+		}
+		mostrarLibros();
+
+	}
+
+	public void eliminarLibro(String isbn) {
+		int res = libroDAO.eliminarLibro(isbn);
+		if (res==0) {
+			JOptionPane.showMessageDialog(nuevoLibro,
+					"Error. No se ha podido eliminar");
+		} else {
+			JOptionPane.showMessageDialog(nuevoLibro,
+					"Libro eliminado correctamente");
+			this.nuevoLibro.setVisible(false);
+		}
+		mostrarLibros();
 		
 	}
 	
